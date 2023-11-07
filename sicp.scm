@@ -98,7 +98,43 @@
 (define (prime? n)
     (= n (smallest-divisor n)))
 
-(print (prime? 2))
+;(print (prime? 2))
+
+;Fermat test 
+
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+            (remainder (square (expmod base (/ exp 2) m))
+                m))
+            (else 
+                (remainder (* base (expmod base (- exp 1) m))
+                                m))))
+
+; small pseudo random generator since no random in chicken scheme
+(define *random-seed* 42) ; Set an initial seed
+
+(define (random n)
+  (set! *random-seed* (+ (* *random-seed* 1664525 1013904223) 12345))
+  (modulo *random-seed* n))
+
+
+(define (fermat-test n)
+    (define (try-it a)
+        (= (expmod a n n) a))
+    (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+    (cond ((= times 0) #t)
+          ((fermat-test n) (fast-prime? n (- times 1)))
+          (else #f)))
+
+; (print (smallest-divisor 199))
+; (print (smallest-divisor 1999))
+; (print (smallest-divisor 19999))
+
+; (print (fast-prime? 41 30))
+
 
 
 
