@@ -79,7 +79,7 @@
     (if (= b 0) 
         a
         (GCD b (remainder a b))))
-(print (GCD 206 40))
+;(print (GCD 206 40))
 
 ;;; Testing for primality
 
@@ -97,6 +97,8 @@
 
 (define (prime? n)
     (= n (smallest-divisor n)))
+
+(print (prime? 2))
 
 
 
